@@ -1,0 +1,18 @@
+services:
+  postgres  :
+    image: postgres:latest
+    container_name: db-postgres
+    environment:
+      POSTGRES_USER: dev
+      POSTGRES_PASSWORD: hello
+      POSTGRES_DB: bar
+    ports:
+      - "3307:5432" 
+    volumes:
+      - ./db/:/docker-entrypoint-initdb.d/
+    networks:
+      - postgres-reseau
+
+networks:
+  postgres-reseau:
+    driver: bridge
