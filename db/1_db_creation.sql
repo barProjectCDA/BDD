@@ -1,98 +1,74 @@
-
-CREATE TABLE categorie (
-   id_categorie SERIAL PRIMARY KEY,
-   nom VARCHAR(50),
-   couleur_css_hexadecimal VARCHAR(10)
+CREATE TABLE categorie(
+   Id_categorie SERIAL,
+   nom VARCHAR(50) ,
+   couleur_css_hexadecimal VARCHAR(10) ,
+   Id_categorie_1 INTEGER,
+   PRIMARY KEY(Id_categorie),
+   FOREIGN KEY(Id_categorie_1) REFERENCES categorie(Id_categorie)
 );
 
-CREATE TABLE sous_categorie (
-   id_sous_categorie SERIAL PRIMARY KEY,
-   nom VARCHAR(50),
-   id_categorie INT NOT NULL,
-   couleur_css_hexadecimal VARCHAR(10),
-   FOREIGN KEY(id_categorie) REFERENCES categorie(id_categorie)
+CREATE TABLE supplement(
+   Id_supplement SERIAL,
+   nom VARCHAR(30) ,
+   prix NUMERIC(5,2)  ,
+   PRIMARY KEY(Id_supplement)
 );
 
-CREATE TABLE supplement (
-   id_supplement SERIAL PRIMARY KEY,
-   nom VARCHAR(30),
-   prix DECIMAL(5,2)
+CREATE TABLE table_client(
+   Id_table_client SERIAL,
+   PRIMARY KEY(Id_table_client)
 );
 
-CREATE TABLE table_client (
-   id_table_client SERIAL PRIMARY KEY
+CREATE TABLE produit(
+   Id_produit SERIAL,
+   nom VARCHAR(50) ,
+   prix NUMERIC(5,2)  ,
+   couleur_css_hexadecimal VARCHAR(10) ,
+   Id_categorie INTEGER NOT NULL,
+   PRIMARY KEY(Id_produit),
+   FOREIGN KEY(Id_categorie) REFERENCES categorie(Id_categorie)
 );
 
-CREATE TABLE produit (
-   id_produit SERIAL PRIMARY KEY,
-   nom VARCHAR(50),
-   prix DECIMAL(6,2),
-   couleur_css_hexadecimal VARCHAR(10),
-   id_sous_categorie INT NOT NULL,
-   id_categorie INT NOT NULL,
-   FOREIGN KEY(id_sous_categorie) REFERENCES sous_categorie(id_sous_categorie),
-   FOREIGN KEY(id_categorie) REFERENCES categorie(id_categorie)
+CREATE TABLE bar_user(
+   Id_bar_user SERIAL,
+   firstName VARCHAR(50) ,
+   lastName VARCHAR(50) ,
+   username VARCHAR(50) ,
+   role VARCHAR(50) ,
+   PRIMARY KEY(Id_bar_user)
 );
 
-CREATE TABLE "user" (
-   id_user SERIAL PRIMARY KEY,
-   nom VARCHAR(30),
-   identifiant INT
+CREATE TABLE commande(
+   Id_commande SERIAL,
+   Id_table_client INTEGER NOT NULL,
+   Id_bar_user INTEGER NOT NULL,
+   PRIMARY KEY(Id_commande),
+   UNIQUE(Id_table_client),
+   FOREIGN KEY(Id_table_client) REFERENCES table_client(Id_table_client),
+   FOREIGN KEY(Id_bar_user) REFERENCES bar_user(Id_bar_user)
 );
 
-CREATE TABLE commande (
-   id_commande SERIAL PRIMARY KEY,
-   id_table_client INT NOT NULL,
-   id_user INT NOT NULL,
-   UNIQUE(id_table_client),
-   FOREIGN KEY(id_table_client) REFERENCES table_client(id_table_client),
-   FOREIGN KEY(id_user) REFERENCES "user"(id_user)
+CREATE TABLE commande_produit_supplement(
+   Id_commande_produit_supplement SERIAL,
+   Id_produit INTEGER NOT NULL,
+   Id_commande INTEGER NOT NULL,
+   PRIMARY KEY(Id_commande_produit_supplement),
+   FOREIGN KEY(Id_produit) REFERENCES produit(Id_produit),
+   FOREIGN KEY(Id_commande) REFERENCES commande(Id_commande)
 );
 
-CREATE TABLE commentaire (
-   id_commentaire SERIAL PRIMARY KEY,
-   contenu VARCHAR(100),
-   id_produit INT NOT NULL,
-   UNIQUE(id_produit),
-   FOREIGN KEY(id_produit) REFERENCES produit(id_produit)
+CREATE TABLE produit_supplement(
+   Id_supplement INTEGER,
+   Id_produit INTEGER,
+   PRIMARY KEY(Id_supplement, Id_produit),
+   FOREIGN KEY(Id_supplement) REFERENCES supplement(Id_supplement),
+   FOREIGN KEY(Id_produit) REFERENCES produit(Id_produit)
 );
 
-CREATE TABLE produits_supplements (
-   id_produit INT,
-   id_supplement INT,
-   PRIMARY KEY(id_produit, id_supplement),
-   FOREIGN KEY(id_produit) REFERENCES produit(id_produit),
-   FOREIGN KEY(id_supplement) REFERENCES supplement(id_supplement)
-);
-
-CREATE TABLE commande_produit_supplement (
-    id_commande_produit_supplement SERIAL PRIMARY KEY,
-    id_commande INT NOT NULL,
-    id_produit INT NOT NULL,
-    id_supplement INT,
-    supplement_associer INT DEFAULT NULL,
-    FOREIGN KEY(id_commande) REFERENCES commande(id_commande) ON DELETE CASCADE,
-    FOREIGN KEY(id_produit) REFERENCES produit(id_produit) ON DELETE CASCADE,
-    FOREIGN KEY(id_supplement) REFERENCES supplement(id_supplement) ON DELETE CASCADE,
-    FOREIGN KEY(supplement_associer) REFERENCES commande_produit_supplement(id_commande_produit_supplement) ON DELETE CASCADE
-);
-
-CREATE TABLE commande_paye (
-    id_commande INT PRIMARY KEY,
-    id_table_client INT NOT NULL,
-    id_user INT NOT NULL,
-    FOREIGN KEY(id_table_client) REFERENCES table_client(id_table_client),
-    FOREIGN KEY(id_user) REFERENCES "user"(id_user)
-);
-
-CREATE TABLE commande_produit_supplement_paye (
-    id_commande_produit_supplement SERIAL PRIMARY KEY,
-    id_commande INT NOT NULL,
-    id_produit INT NOT NULL,
-    id_supplement INT,
-    supplement_associer INT DEFAULT NULL,
-    FOREIGN KEY(id_commande) REFERENCES commande_paye(id_commande) ON DELETE CASCADE,
-    FOREIGN KEY(id_produit) REFERENCES produit(id_produit) ON DELETE CASCADE,
-    FOREIGN KEY(id_supplement) REFERENCES supplement(id_supplement) ON DELETE CASCADE,
-    FOREIGN KEY(supplement_associer) REFERENCES commande_produit_supplement_paye(id_commande_produit_supplement) ON DELETE CASCADE
+CREATE TABLE supp_par_prod_commande(
+   Id_supplement INTEGER,
+   Id_commande_produit_supplement INTEGER,
+   PRIMARY KEY(Id_supplement, Id_commande_produit_supplement),
+   FOREIGN KEY(Id_supplement) REFERENCES supplement(Id_supplement),
+   FOREIGN KEY(Id_commande_produit_supplement) REFERENCES commande_produit_supplement(Id_commande_produit_supplement)
 );
