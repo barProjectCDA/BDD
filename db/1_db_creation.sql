@@ -35,6 +35,7 @@ CREATE TABLE bar_user(
    lastName VARCHAR(50) ,
    username VARCHAR(50) ,
    role VARCHAR(50) ,
+   password VARCHAR(50) ,
    PRIMARY KEY(Id_bar_user)
 );
 
