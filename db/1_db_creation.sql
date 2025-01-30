@@ -1,32 +1,32 @@
-CREATE TABLE categorie(
-   Id_categorie SERIAL,
-   nom VARCHAR(50) ,
-   couleur_css_hexadecimal VARCHAR(10) ,
-   Id_categorie_1 INTEGER,
-   PRIMARY KEY(Id_categorie),
-   FOREIGN KEY(Id_categorie_1) REFERENCES categorie(Id_categorie)
+CREATE TABLE category(
+   Id_category SERIAL,
+   name VARCHAR(50) ,
+   css_hexadecimal_color VARCHAR(10) ,
+   Id_category_1 INTEGER,
+   PRIMARY KEY(Id_category),
+   FOREIGN KEY(Id_category_1) REFERENCES category(Id_category)
 );
 
-CREATE TABLE supplement(
-   Id_supplement SERIAL,
-   nom VARCHAR(30) ,
-   prix NUMERIC(5,2)  ,
-   PRIMARY KEY(Id_supplement)
+CREATE TABLE extra(
+   Id_extra SERIAL,
+   name VARCHAR(30) ,
+   price NUMERIC(5,2)  ,
+   PRIMARY KEY(Id_extra)
 );
 
-CREATE TABLE table_client(
-   Id_table_client SERIAL,
-   PRIMARY KEY(Id_table_client)
+CREATE TABLE client_table(
+   Id_client_table SERIAL,
+   PRIMARY KEY(Id_client_table)
 );
 
-CREATE TABLE produit(
-   Id_produit SERIAL,
-   nom VARCHAR(50) ,
-   prix NUMERIC(5,2)  ,
-   couleur_css_hexadecimal VARCHAR(10) ,
-   Id_categorie INTEGER NOT NULL,
-   PRIMARY KEY(Id_produit),
-   FOREIGN KEY(Id_categorie) REFERENCES categorie(Id_categorie)
+CREATE TABLE product(
+   Id_product SERIAL,
+   name VARCHAR(50) ,
+   price NUMERIC(5,2)  ,
+   css_hexadecimal_color VARCHAR(10) ,
+   Id_category INTEGER NOT NULL,
+   PRIMARY KEY(Id_product),
+   FOREIGN KEY(Id_category) REFERENCES category(Id_category)
 );
 
 CREATE TABLE bar_user(
@@ -38,37 +38,37 @@ CREATE TABLE bar_user(
    PRIMARY KEY(Id_bar_user)
 );
 
-CREATE TABLE commande(
-   Id_commande SERIAL,
-   Id_table_client INTEGER NOT NULL,
+CREATE TABLE orders(
+   Id_order SERIAL,
+   Id_client_table INTEGER NOT NULL,
    Id_bar_user INTEGER NOT NULL,
-   PRIMARY KEY(Id_commande),
-   UNIQUE(Id_table_client),
-   FOREIGN KEY(Id_table_client) REFERENCES table_client(Id_table_client),
+   PRIMARY KEY(Id_order),
+   UNIQUE(Id_client_table),
+   FOREIGN KEY(Id_client_table) REFERENCES client_table(Id_client_table),
    FOREIGN KEY(Id_bar_user) REFERENCES bar_user(Id_bar_user)
 );
 
-CREATE TABLE commande_produit_supplement(
-   Id_commande_produit_supplement SERIAL,
-   Id_produit INTEGER NOT NULL,
-   Id_commande INTEGER NOT NULL,
-   PRIMARY KEY(Id_commande_produit_supplement),
-   FOREIGN KEY(Id_produit) REFERENCES produit(Id_produit),
-   FOREIGN KEY(Id_commande) REFERENCES commande(Id_commande)
+CREATE TABLE order_product_extra(
+   Id_order_product_extra SERIAL,
+   Id_product INTEGER NOT NULL,
+   Id_order INTEGER NOT NULL,
+   PRIMARY KEY(Id_order_product_extra),
+   FOREIGN KEY(Id_product) REFERENCES product(Id_product),
+   FOREIGN KEY(Id_order) REFERENCES orders(Id_order)
 );
 
-CREATE TABLE produit_supplement(
-   Id_supplement INTEGER,
-   Id_produit INTEGER,
-   PRIMARY KEY(Id_supplement, Id_produit),
-   FOREIGN KEY(Id_supplement) REFERENCES supplement(Id_supplement),
-   FOREIGN KEY(Id_produit) REFERENCES produit(Id_produit)
+CREATE TABLE product_extra(
+   Id_extra INTEGER,
+   Id_product INTEGER,
+   PRIMARY KEY(Id_extra, Id_product),
+   FOREIGN KEY(Id_extra) REFERENCES extra(Id_extra),
+   FOREIGN KEY(Id_product) REFERENCES product(Id_product)
 );
 
-CREATE TABLE supp_par_prod_commande(
-   Id_supplement INTEGER,
-   Id_commande_produit_supplement INTEGER,
-   PRIMARY KEY(Id_supplement, Id_commande_produit_supplement),
-   FOREIGN KEY(Id_supplement) REFERENCES supplement(Id_supplement),
-   FOREIGN KEY(Id_commande_produit_supplement) REFERENCES commande_produit_supplement(Id_commande_produit_supplement)
+CREATE TABLE associated_extra(
+   Id_extra INTEGER,
+   Id_order_product_extra INTEGER,
+   PRIMARY KEY(Id_extra, Id_order_product_extra),
+   FOREIGN KEY(Id_extra) REFERENCES extra(Id_extra),
+   FOREIGN KEY(Id_order_product_extra) REFERENCES order_product_extra(Id_order_product_extra)
 );
