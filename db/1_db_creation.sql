@@ -1,74 +1,74 @@
 CREATE TABLE "category"(
-   "Id_category" SERIAL,
+   "id_category" SERIAL,
    "name" VARCHAR(50),
    "css_hexadecimal_color" VARCHAR(10),
-   "Id_category_1" INTEGER NULL, -- Allowing null in case there's no parent category
-   PRIMARY KEY("Id_category"),
-   FOREIGN KEY("Id_category_1") REFERENCES "category"("Id_category") ON DELETE SET NULL
+   "id_category_1" INTEGER NULL, -- Allowing null in case there's no parent category
+   PRIMARY KEY("id_category"),
+   FOREIGN KEY("id_category_1") REFERENCES "category"("id_category") ON DELETE SET NULL
 );
 
 CREATE TABLE "extra"(
-   "Id_extra" SERIAL,
+   "id_extra" SERIAL,
    "name" VARCHAR(30),
    "price" NUMERIC(5,2),
-   PRIMARY KEY("Id_extra")
+   PRIMARY KEY("id_extra")
 );
 
 CREATE TABLE "client_table"(
-   "Id_client_table" SERIAL,
-   PRIMARY KEY("Id_client_table")
+   "id_client_table" SERIAL,
+   PRIMARY KEY("id_client_table")
 );
 
 CREATE TABLE "product"(
-   "Id_product" SERIAL,
+   "id_product" SERIAL,
    "name" VARCHAR(50),
    "price" NUMERIC(5,2),
    "css_hexadecimal_color" VARCHAR(10),
-   "Id_category" INTEGER NOT NULL,
-   PRIMARY KEY("Id_product"),
-   FOREIGN KEY("Id_category") REFERENCES "category"("Id_category")
+   "id_category" INTEGER NOT NULL,
+   PRIMARY KEY("id_product"),
+   FOREIGN KEY("id_category") REFERENCES "category"("id_category")
 );
 
 CREATE TABLE "bar_user"(
-   "Id_bar_user" SERIAL,
+   "id_bar_user" SERIAL,
    "firstName" VARCHAR(50),
    "lastName" VARCHAR(50),
    "username" VARCHAR(50),
    "role" VARCHAR(50),
    "password" VARCHAR(50),
-   PRIMARY KEY("Id_bar_user")
+   PRIMARY KEY("id_bar_user")
 );
 
 CREATE TABLE "orders"(
-   "Id_order" SERIAL,
-   "Id_client_table" INTEGER NOT NULL,
-   "Id_bar_user" INTEGER NOT NULL,
-   PRIMARY KEY("Id_order"),
-   FOREIGN KEY("Id_client_table") REFERENCES "client_table"("Id_client_table"),
-   FOREIGN KEY("Id_bar_user") REFERENCES "bar_user"("Id_bar_user")
+   "id_order" SERIAL,
+   "id_client_table" INTEGER NOT NULL,
+   "id_bar_user" INTEGER NOT NULL,
+   PRIMARY KEY("id_order"),
+   FOREIGN KEY("id_client_table") REFERENCES "client_table"("id_client_table"),
+   FOREIGN KEY("id_bar_user") REFERENCES "bar_user"("id_bar_user")
 );
 
 CREATE TABLE "order_product_extra"(
-   "Id_order_product_extra" SERIAL,
-   "Id_product" INTEGER NOT NULL,
-   "Id_order" INTEGER NOT NULL,
-   PRIMARY KEY("Id_order_product_extra"),
-   FOREIGN KEY("Id_product") REFERENCES "product"("Id_product"),
-   FOREIGN KEY("Id_order") REFERENCES "orders"("Id_order")
+   "id_order_product_extra" SERIAL,
+   "id_product" INTEGER NOT NULL,
+   "id_order" INTEGER NOT NULL,
+   PRIMARY KEY("id_order_product_extra"),
+   FOREIGN KEY("id_product") REFERENCES "product"("id_product"),
+   FOREIGN KEY("id_order") REFERENCES "orders"("id_order")
 );
 
 CREATE TABLE "product_extra"(
-   "Id_extra" INTEGER,
-   "Id_product" INTEGER,
-   PRIMARY KEY("Id_extra", "Id_product"),
-   FOREIGN KEY("Id_extra") REFERENCES "extra"("Id_extra"),
-   FOREIGN KEY("Id_product") REFERENCES "product"("Id_product")
+   "id_extra" INTEGER,
+   "id_product" INTEGER,
+   PRIMARY KEY("id_extra", "id_product"),
+   FOREIGN KEY("id_extra") REFERENCES "extra"("id_extra"),
+   FOREIGN KEY("id_product") REFERENCES "product"("id_product")
 );
 
 CREATE TABLE "associated_extra"(
-   "Id_extra" INTEGER,
-   "Id_order_product_extra" INTEGER,
-   PRIMARY KEY("Id_extra", "Id_order_product_extra"),
-   FOREIGN KEY("Id_extra") REFERENCES "extra"("Id_extra"),
-   FOREIGN KEY("Id_order_product_extra") REFERENCES "order_product_extra"("Id_order_product_extra")
+   "id_extra" INTEGER,
+   "id_order_product_extra" INTEGER,
+   PRIMARY KEY("id_extra", "id_order_product_extra"),
+   FOREIGN KEY("id_extra") REFERENCES "extra"("id_extra"),
+   FOREIGN KEY("id_order_product_extra") REFERENCES "order_product_extra"("id_order_product_extra")
 );
