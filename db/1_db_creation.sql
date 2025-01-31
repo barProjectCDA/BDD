@@ -39,7 +39,7 @@ CREATE TABLE "bar_user"(
    PRIMARY KEY("id_bar_user")
 );
 
-CREATE TABLE "orders"(
+CREATE TABLE "order"(
    "id_order" SERIAL,
    "id_client_table" INTEGER NOT NULL,
    "id_bar_user" INTEGER NOT NULL,
@@ -54,7 +54,7 @@ CREATE TABLE "order_product_extra"(
    "id_order" INTEGER NOT NULL,
    PRIMARY KEY("id_order_product_extra"),
    FOREIGN KEY("id_product") REFERENCES "product"("id_product"),
-   FOREIGN KEY("id_order") REFERENCES "orders"("id_order")
+   FOREIGN KEY("id_order") REFERENCES "order"("id_order")
 );
 
 CREATE TABLE "product_extra"(
