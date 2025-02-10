@@ -31,10 +31,10 @@ CREATE TABLE "product"(
 
 CREATE TABLE "bar_user"(
    "id_bar_user" SERIAL,
-   "firstName" VARCHAR(50),
-   "lastName" VARCHAR(50),
-   "username" VARCHAR(50),
-   "role" VARCHAR(50),
+   "firstName" VARCHAR(50) NOT NULL,
+   "lastName" VARCHAR(50) NOT NULL,
+   "username" VARCHAR(50) UNIQUE NOT NULL,
+   "role" BOOLEAN,
    "password" CHAR(60),
    PRIMARY KEY("id_bar_user")
 );
@@ -76,3 +76,20 @@ CREATE TABLE "associated_extra"(
    FOREIGN KEY("id_extra") REFERENCES "extra"("id_extra"),
    FOREIGN KEY("id_order_product_extra") REFERENCES "order_product_extra"("id_order_product_extra")
 );
+
+
+CREATE OR REPLACE FUNCTION check_username_unique()
+RETURNS TRIGGER AS $$
+BEGIN
+   IF EXISTS (SELECT 1 FROM "bar_user" WHERE "username" = NEW."username") THEN
+   RAISE EXCEPTION 'Username "%" already exists', NEW."username";
+   END IF;
+RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+-- Créer le trigger qui appelle la check_username
+CREATE TRIGGER check_username_unique
+BEFORE INSERT ON "bar_user"
+FOR EACH ROW
+EXECUTE FUNCTION check_username_unique();
