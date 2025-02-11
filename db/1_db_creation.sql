@@ -1,6 +1,6 @@
 CREATE TABLE "category"(
    "id_category" SERIAL,
-   "name_category" VARCHAR(50),
+   "name_category" VARCHAR(50) UNIQUE NOT NULL,
    "css_hexadecimal_color" VARCHAR(10),
    "id_category_1" INTEGER NULL,
    PRIMARY KEY("id_category"),
