@@ -19,15 +19,15 @@ CREATE TABLE "client_table"(
    PRIMARY KEY("id_client_table")
 );
 
-CREATE TABLE "product"(
-   "id_product" SERIAL,
-   "name_product" VARCHAR(50),
-   "price_product" NUMERIC(5,2),
-   "css_hexadecimal_color" VARCHAR(10),
-   "id_category" INTEGER NOT NULL,
-   PRIMARY KEY("id_product"),
-   FOREIGN KEY("id_category") REFERENCES "category"("id_category")
-);
+   CREATE TABLE "product"(
+      "id_product" SERIAL,
+      "name_product" VARCHAR(50),
+      "price_product" NUMERIC(5,2),
+      "css_hexadecimal_color" VARCHAR(10),
+      "id_category" INTEGER NOT NULL,
+      PRIMARY KEY("id_product"),
+      FOREIGN KEY("id_category") REFERENCES "category"("id_category")
+   );
 
 CREATE TABLE "bar_user"(
    "id_bar_user" SERIAL,
