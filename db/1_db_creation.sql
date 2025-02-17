@@ -93,3 +93,21 @@ CREATE TRIGGER check_username_unique
 BEFORE INSERT ON "bar_user"
 FOR EACH ROW
 EXECUTE FUNCTION check_username_unique();
+
+
+
+CREATE VIEW product_with_extras AS
+SELECT 
+    p."id_product",
+    p."name_product",
+    p."price_product",
+    p."css_hexadecimal_color",
+    e."id_extra",
+    e."name_extra",
+    e."price_extra"
+FROM 
+    "product" p
+JOIN 
+    "product_extra" pe ON p."id_product" = pe."id_product"
+JOIN 
+    "extra" e ON pe."id_extra" = e."id_extra";
