@@ -36,10 +36,7 @@ VALUES
     ('Non-Alcoholic Cocktails', '#98FB98', 2);  -- Parent id_category = 2
 
 -- Nested Categories under "Classic Cocktails" (id_category = 4, which is Classic Cocktails)
--- Whiskey-Based Cocktails subcategory under Classic Cocktails
-INSERT INTO "category" ("name_category", "css_hexadecimal_color", "id_category_1")
-VALUES
-    ('Whiskey-Based Cocktails', '#8B4513', 4);  -- Parent id_category = 4
+
 
 -- Rum-Based Cocktails subcategory under Classic Cocktails
 INSERT INTO "category" ("name_category", "css_hexadecimal_color", "id_category_1")
